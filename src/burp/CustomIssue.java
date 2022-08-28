@@ -26,7 +26,7 @@ public class CustomIssue implements IScanIssue {
         httpService = baseRequestResponse.getHttpService();
         this.url = url;
         this.httpMessages = new IHttpRequestResponse[]{baseRequestResponse};
-        this.name = name;
+        this.name = "RegexFinder: "+name;
         this.detail = detail;
         this.severity = "Information"; // "High", "Medium", "Low", "Information" or "False positive"
         this.confidence = "Certain"; //"Certain", "Firm" or "Tentative"

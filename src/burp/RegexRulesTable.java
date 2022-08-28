@@ -8,6 +8,7 @@ import javax.swing.event.TableModelListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -255,6 +256,35 @@ public class RegexRulesTable extends javax.swing.JPanel {
                 mCallbacks.printError("Invalid match pattern: " + values[2]);
 
             }
+        }
+    }
+
+    public String getMatchRulesInString() {
+        DefaultTableModel model = (DefaultTableModel)rules.getModel();
+        ArrayList<String> ruleArr = new ArrayList<String>();
+        if (model.getColumnCount() != 3) {
+            mCallbacks.printError("Invalid number of column in Rule Table: "+model.getColumnCount());
+            return null;
+        }
+        int n = model.getRowCount();
+        for(int r = 0; r < n; r++) {
+            String v0 = (String)model.getValueAt(r, 0);
+            String v1 = (String)model.getValueAt(r, 1);
+            String v2 = (String)model.getValueAt(r, 2);
+            ruleArr.add(v0 + "\t" + v1 + "\t" + v2);
+        }
+        if (ruleArr.size() == 0) return null;
+        return String.join("\n", ruleArr);
+    }
+
+    public void loadMatchRulesFromString(String tableContent) {
+        Reader inputString = new StringReader(tableContent);
+        BufferedReader reader = new BufferedReader(inputString);
+        try {
+            processMatchRules(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+            mCallbacks.printError("Got some error: "+e.getMessage());
         }
     }
 
